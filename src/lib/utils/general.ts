@@ -25,7 +25,7 @@ export const getDropColor = ({drop,index,frequency}:{drop:Drop, index:number,fre
         if(index+1>currDate)return colors[Drop.UNMARKED]
         if(index+1===currDate)return "#DDD"
         if(frequency===FrequencyConfig.DAILY)return "#CDCDCD"
-        if(index+1>=currDate-offset)return colors[Drop.UNMARKED]
+        if(index+1>=currDate-offset)return "#DDD"
         return "#CDCDCD"
     }
     return colors[drop]
