@@ -1,0 +1,53 @@
+:root{
+    --primary0: #8BB8F1;
+    --primary1: #A2C6F4;
+    --primary2: #AECDF5;
+    --primary3: #B9D4F7;
+    --primary4: #C5DCF8;
+    --primary5: #DCEAFB;
+
+    --dark0: #222222;
+    --dark1: #444444;
+    --dark2: #666666;
+    --dark3: #888888;
+    --light0: #EEEEEE;
+    --light1: #DDDDDD;
+    --light2: #CCCCCC;
+    --light3: #AAAAAA;
+
+    --boxSize: 25px;
+    --smallRadius: 2.5px;
+    --midRadius: 5px;
+
+    --smallGap: 5px;
+    --midGap: 10px;
+    --bigGap: 20px;
+
+    --basicTransition: all ease-in-out 0.3s
+}
+
+body {
+    width: 100vw;
+    background-color: var(--light0);
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: inherit;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    height: fit-content;
+    padding: 0;
+}
+
+*:focus {
+    border: none;
+    outline: none;
+}
+
+::-webkit-scrollbar{
+    display: none;
+}
