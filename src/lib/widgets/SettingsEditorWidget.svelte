@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { globalConfigContext } from "$lib/context/golbalConfig";
 	import { showSettingsContext } from "$lib/context/showSettings";
+	import { userIdContext } from "$lib/context/userId";
 	import { EditorField, VisibilityConfig, FrequencyConfig, VisibilityToggleConfig, type GlobalConfig } from "$lib/interfaces/general";
 	import { outsideClickHandler } from "$lib/utils/general";
 	import { updateGlobalConfig } from "$lib/utils/globalConfigFunctions";
@@ -9,7 +10,9 @@
 	import EditorFieldWidget from "./EditorFieldWidget.svelte";
 
     let globalConfig:GlobalConfig|null = null
+    let userId:string
     globalConfigContext.subscribe(x=>globalConfig=x)
+    userIdContext.subscribe(x=>userId=x)
 
     const updateConfigHandler = async({editorField, config}:{editorField:EditorField.SHOW_DATES|EditorField.SHOW_DAYS|EditorField.SHOW_TODAY|EditorField.SHOW_WEEK, config:VisibilityConfig})=>{
 		try {
@@ -19,7 +22,7 @@
 			if(editorField===EditorField.SHOW_TODAY)globalConfig.showToday= config
 			if(editorField===EditorField.SHOW_WEEK)globalConfig.showWeek= config
             globalConfigContext.set(globalConfig)
-			await updateGlobalConfig(globalConfig)
+			await updateGlobalConfig({userId, globalConfig})
 		} catch (err:any) {
 			console.error(`failed to update globalConfig : ${err.message}`)
 		}

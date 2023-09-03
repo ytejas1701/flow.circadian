@@ -1,6 +1,7 @@
 import { flowCollectionContext } from "$lib/context/flowCollection"
 import { globalConfigContext } from "$lib/context/golbalConfig"
 import { taskCollectionContext } from "$lib/context/taskCollection"
+import { userIdContext } from "$lib/context/userId"
 import { VisibilityConfig, EditorField, FrequencyConfig, VisibilityToggleConfig, ToggleConfig, type Task, type Flow } from "$lib/interfaces/general"
 import { type MonthCode, type DayOfWeek, type Config, Drop } from "$lib/interfaces/general"
 import { getFlowCollection } from "./flowFunctions"
@@ -165,9 +166,11 @@ export const outsideClickHandler = ({node,name,action}:{node:Node,name:string,ac
 }
 
 export const initialize = async ()=>{
-    flowCollectionContext.set(await getFlowCollection(getCurrentMonthCode()))
-    taskCollectionContext.set(await getTaskCollection())
-    globalConfigContext.set(await getGlobalConfig())
+    const userId:string = localStorage.getItem("id")??"" 
+    userIdContext.set(userId)
+    flowCollectionContext.set(await getFlowCollection({userId,monthCode:getCurrentMonthCode()}))
+    taskCollectionContext.set(await getTaskCollection(userId))
+    globalConfigContext.set(await getGlobalConfig(userId))
 }
 
 export const increaseDrop = (drop:Drop):Drop =>{

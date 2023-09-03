@@ -1,9 +1,9 @@
 import { Drop, type Collection, type Flow,  type TaskId, FrequencyConfig } from "$lib/interfaces/general";
 import { getCurrentMonthCode, getDayOffsetFromDateAndMonthCode, getNumberOfDaysFromMonthCode, increaseDrop } from "./general";
 
-export const getFlowCollection = async (monthCode: string):Promise<Collection<Flow>> => {
+export const getFlowCollection = async ({userId,monthCode}:{userId:string, monthCode: string}):Promise<Collection<Flow>> => {
     const response = await fetch(
-        `https://flow-be0c2-default-rtdb.firebaseio.com/LsOIdmuPBmZI1R5Kxhggvsl1G0o1/flow/${monthCode}.json`
+        `https://flow-be0c2-default-rtdb.firebaseio.com/${userId}/flow/${monthCode}.json`
     );
     if (!response.ok) throw new Error(`could not get flows for month ${monthCode}`);
     return convertResponseObject(await response.json())
@@ -17,9 +17,9 @@ export const convertResponseObject = (responseObject:{[id:TaskId]:string}):Colle
     return flowCollection
 }
 
-export const updateFlow = async ({taskId, newFlow, monthCode}:{taskId: string, newFlow:Flow, monthCode:string}) => {
+export const updateFlow = async ({userId, taskId, newFlow, monthCode}:{userId:string, taskId: string, newFlow:Flow, monthCode:string}) => {
     await fetch(
-        `https://flow-be0c2-default-rtdb.firebaseio.com/LsOIdmuPBmZI1R5Kxhggvsl1G0o1/flow/${monthCode}/${taskId}.json`,
+        `https://flow-be0c2-default-rtdb.firebaseio.com/${userId}/flow/${monthCode}/${taskId}.json`,
         {
             method: 'PUT',
             body: JSON.stringify(newFlow.join(""))
@@ -27,9 +27,9 @@ export const updateFlow = async ({taskId, newFlow, monthCode}:{taskId: string, n
     );
 };
 
-export const createFlow = async ({taskId, monthCode}:{taskId: string, monthCode:string}) => {
+export const createFlow = async ({userId, taskId, monthCode}:{userId:string, taskId: string, monthCode:string}) => {
     await fetch(
-        `https://flow-be0c2-default-rtdb.firebaseio.com/LsOIdmuPBmZI1R5Kxhggvsl1G0o1/flow/${monthCode}/${taskId}.json`,
+        `https://flow-be0c2-default-rtdb.firebaseio.com/${userId}/flow/${monthCode}/${taskId}.json`,
         {
             method: 'PUT',
             body: JSON.stringify(Drop.UNMARKED.repeat(getNumberOfDaysFromMonthCode(monthCode)))

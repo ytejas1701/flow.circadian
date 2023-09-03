@@ -2,6 +2,7 @@
 	import { flowCollectionContext } from "$lib/context/flowCollection";
 	import { deselectTask, selectedTaskContext } from "$lib/context/selectedTask";
 	import { addTaskToCollection, taskCollectionContext } from "$lib/context/taskCollection";
+	import { userIdContext } from "$lib/context/userId";
 	import { type Collection, type Task, VisibilityConfig, EditorField, FrequencyConfig, VisibilityToggleConfig, type Config, ToggleConfig, Drop, type Flow } from "$lib/interfaces/general";
 	import { getDeadlineLabel, calculateStreak, getLabelFromConfig, outsideClickHandler } from "$lib/utils/general";
 	import { updateTask } from "$lib/utils/taskFunctions";
@@ -13,6 +14,8 @@
     let deadlineLabel:string
     let taskCollection:Collection<Task>
     let flowCollection:Collection<Flow>
+    let userId:string
+    userIdContext.subscribe(x=>userId=x)
 
     taskCollectionContext.subscribe(x=>taskCollection=x)
     flowCollectionContext.subscribe(x=>flowCollection=x)
@@ -29,7 +32,7 @@
 		try {
 			if(task===null)throw new Error("no task selected")
 			addTaskToCollection(task)
-			await updateTask(task)
+			await updateTask({userId,task})
 		} catch (err:any) {
 			console.error(`failed to update task = ${task?.id} : ${err.message}`)
 		}
@@ -44,7 +47,7 @@
             else if(editorField===EditorField.SHOW_TASK)task.config.showTask = config as VisibilityToggleConfig
             else if(editorField===EditorField.SHOW_DEADLINE)task.config.showDeadline = config as VisibilityConfig
             addTaskToCollection(task)
-			await updateTask(task)
+			await updateTask({userId,task})
 		} catch (err:any) {
 			console.error(`failed to update task = ${task?.id} : ${err.message}`)
 		}

@@ -3,6 +3,7 @@
 	import { selectedMonthContext } from "$lib/context/selectedMonth";
 	import { selectedTaskContext } from "$lib/context/selectedTask";
 	import { addTaskToCollection } from "$lib/context/taskCollection";
+	import { userIdContext } from "$lib/context/userId";
 	import { Drop, type Flow, type MonthCode, type Task } from "$lib/interfaces/general";
 	import { createFlow } from "$lib/utils/flowFunctions";
 	import { getCurrentMonthCode, getNumberOfDaysFromMonthCode } from "$lib/utils/general";
@@ -12,12 +13,13 @@
 
     selectedMonthContext.subscribe(x=>monthCode=x)
     let isLoading:boolean = false;
-
+    let userId:string
+    userIdContext.subscribe(x=>userId=x)
     const clickHandler = async (event:MouseEvent)=>{
         isLoading = true
         try {
-			const newTask:Task = await createTask()
-			await createFlow({taskId:newTask.id, monthCode})
+			const newTask:Task = await createTask(userId)
+			await createFlow({userId, taskId:newTask.id, monthCode})
 			addFlowToCollection({flow:Array(getNumberOfDaysFromMonthCode(getCurrentMonthCode())).fill(Drop.UNMARKED), taskId:newTask.id})
 			addTaskToCollection(newTask)
             selectedTaskContext.set(newTask.id)

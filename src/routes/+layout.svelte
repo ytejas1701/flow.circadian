@@ -12,11 +12,14 @@
 	import SettingsEditorWidget from '$lib/widgets/SettingsEditorWidget.svelte';
 	import { onMount } from 'svelte';
 	import { initialize } from '$lib/utils/general';
+	import { userIdContext } from '$lib/context/userId';
 
 	let selectedTask: TaskId | null = null;
 	let showSettings: boolean = false
 	let rowCollection: Collection<Row> = {}
 	let isLoading:boolean = true
+	let userId:string
+    userIdContext.subscribe(x=>userId=x)
 	selectedTaskContext.subscribe(x => selectedTask = x)
 	rowCollectionContext.subscribe(x => rowCollection = x)
 	showSettingsContext.subscribe(x => showSettings=x)

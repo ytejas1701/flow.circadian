@@ -8,15 +8,18 @@
 	import { afterUpdate } from 'svelte';
 	import { addRowToCollection } from '$lib/context/rowCollection';
 	import { selectedTaskContext } from '$lib/context/selectedTask';
+	import { userIdContext } from '$lib/context/userId';
 	export let flow: Flow;
 	export let task: Task;
 	let row: HTMLElement;
 	let isSelected: boolean = false;
+	let userId:string
 	selectedTaskContext.subscribe((x) => (isSelected = x === task.id));
+	userIdContext.subscribe((x)=>userId=x)
 	const updateFlowHandler = async (index: number) => {
 		try {
 			flow = refreshFlow({flow,index,frequency:task.config.currFrequency})
-			await updateFlow({ monthCode: getCurrentMonthCode(), newFlow: flow, taskId: task.id });
+			await updateFlow({userId, monthCode: getCurrentMonthCode(), newFlow: flow, taskId: task.id });
 			addFlowToCollection({ taskId: task.id, flow });
 		} catch (err: any) {
 			console.error(`failed to update flow: ${err.message}`);
