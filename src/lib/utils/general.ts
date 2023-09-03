@@ -23,10 +23,10 @@ export const getDropColor = ({drop,index,frequency}:{drop:Drop, index:number,fre
     const offset:number = getDayOffsetFromDateAndMonthCode(currDate,getCurrentMonthCode())
     if(drop===Drop.UNMARKED){
         if(index+1>currDate)return colors[Drop.UNMARKED]
-        if(index+1===currDate)return "#FFFFFF"
-        if(frequency===FrequencyConfig.DAILY)return "#DDDDDD"
+        if(index+1===currDate)return "#DDD"
+        if(frequency===FrequencyConfig.DAILY)return "#CDCDCD"
         if(index+1>=currDate-offset)return colors[Drop.UNMARKED]
-        return "#DDDDDD"
+        return "#CDCDCD"
     }
     return colors[drop]
 }
